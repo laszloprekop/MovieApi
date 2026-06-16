@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Folder for temporary logs, notes, etc. - not necessary to track
-Docs/Untracked/
+/MovieApi/Docs/Untracked
