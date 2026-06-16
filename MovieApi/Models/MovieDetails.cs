@@ -9,6 +9,6 @@
 
         // FK to Movie
         public int MovieId { get; set; }
-        public required Movie Movie { get; set; }
+        public Movie Movie { get; set; } = null!;
     }
 }

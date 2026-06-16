@@ -13,6 +13,6 @@ namespace MovieApi.Models
 
         // FK to Movie, and navigation property back to Movie
         public int MovieId { get; set; }
-        public required Movie Movie { get; set; }
+        public Movie Movie { get; set; } = null!;
     }
 }
