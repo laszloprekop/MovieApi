@@ -1,0 +1,14 @@
+﻿namespace MovieApi.Models
+{
+    public class MovieDetails
+    {
+        public int Id { get; set; }
+        public required string Synopsis { get; set; }
+        public required string Language { get; set; }
+        public int Budget { get; set; }
+
+        // FK to Movie
+        public int MovieId { get; set; }
+        public required Movie Movie { get; set; }
+    }
+}
