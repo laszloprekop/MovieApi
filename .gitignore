@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Folder for temporary logs, notes, etc. - not necessary to track
 /MovieApi/Docs/Untracked
+/.idea/.idea.MovieApi/.idea
