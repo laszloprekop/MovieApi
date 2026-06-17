@@ -1,23 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MovieApi.DTOs;
 using MovieApi.Models;
 
-[Route("api/[controller]")]
+namespace MovieApi.Controllers;
+
 [ApiController]
+[Route("api/movies")]
 public class MoviesController : ControllerBase
 {
     private readonly MovieContext _context;
-    public MoviesController(MovieContext context)
-    {
-        _context = context;
-    }
+    public MoviesController(MovieContext context) => _context = context;
 
-    // GET: api/Movie
+    // GET: api/Movies
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
+    public async Task<ActionResult<IEnumerable<MovieDto>>> GetMovies(
+        [FromQuery] string? genre,
+            [FromQuery] int? year,
+            [FromQuery] string? actor)
     {
-        return await _context.Movies.ToListAsync();
-    }
+        var query = _context.Movies.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(genre))
+        {
+            query = query.Where(m => m.Genre == genre);
+        }
+        if (year
+            is not null)
+        {
+            query = query.Where(m => m.Year == year);
+        }
+        if (!string.IsNullOrWhiteSpace(actor))
+        {
+            query = query.Where(m => m.Actors.Any(a => a.Name == actor));
+        }
+        var movies = await query.ToListAsync();
+        return Ok(movies);    
+     }
+    
+
+
 
     // GET: api/Movie/5
     [HttpGet("{id}")]
@@ -90,6 +112,7 @@ public class MoviesController : ControllerBase
 
         return NoContent();
     }
+    
 
     private bool MovieExists(int? id)
     {
