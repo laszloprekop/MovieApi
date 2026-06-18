@@ -12,7 +12,7 @@
         public MovieDetails? Details { get; set; }
 
         // 1:M One movie has many reviews, but a review belongs to one movie
-public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
         //N:M many to many via implicit join table MovieActor
         public ICollection<Actor> Actors { get; set; } = new List<Actor>();
