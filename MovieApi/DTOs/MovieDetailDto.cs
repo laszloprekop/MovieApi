@@ -15,5 +15,6 @@ namespace MovieApi.DTOs
         public string? Language { get; set; }
         public decimal? Budget { get; set; }
         public List<ReviewDto> Reviews { get; set; } = new();
+        public List<ActorDto> Actors { get; set; } = new();
     }
 }
