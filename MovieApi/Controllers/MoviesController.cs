@@ -93,34 +93,18 @@ public class MoviesController : ControllerBase
         return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, result);
     }
 
-    // PUT: api/Movie/5
+    // PUT: api/movies/{id}
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutMovie(int? id, Movie movie)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateMovie(int id, MovieUpdateDto dto)
     {
-        if (id != movie.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(movie).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!MovieExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
+        var movie = await _context.Movies.FindAsync(id);
+        if (movie is null) return NotFound();
+        movie.Title = dto.Title;
+        movie.Year = dto.Year;
+        movie.Genre = dto.Genre;
+        movie.Duration = dto.Duration;
+        await _context.SaveChangesAsync();
         return NoContent();
     }
 
