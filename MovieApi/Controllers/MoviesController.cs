@@ -108,36 +108,16 @@ public class MoviesController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Movie
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult<Movie>> PostMovie(Movie movie)
-    {
-        _context.Movies.Add(movie);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
-    }
-
-    // DELETE: api/Movie/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteMovie(int? id)
+    // DELETE: api/movies/{id}
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteMovie(int id)
     {
         var movie = await _context.Movies.FindAsync(id);
-        if (movie == null)
-        {
-            return NotFound();
-        }
+        if (movie is null) return NotFound();
 
-        _context.Movies.Remove(movie);
+        _context.Movies.Remove(movie); // cascade delete Reviews and MovieDetails
         await _context.SaveChangesAsync();
 
         return NoContent();
-    }
-
-
-    private bool MovieExists(int? id)
-    {
-        return _context.Movies.Any(e => e.Id == id);
     }
 }
