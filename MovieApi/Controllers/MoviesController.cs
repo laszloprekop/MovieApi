@@ -72,7 +72,27 @@ public class MoviesController : ControllerBase
         if (dto is null) return NotFound();
         return Ok(dto);
     }
-    
+
+    // POST /api/movies
+    [HttpPost]
+    public async Task<ActionResult<MovieDto>> CreateMovie(MovieCreateDto dto)
+    {
+        var movie = new Movie
+        {
+            Title = dto.Title,
+            Year = dto.Year,
+            Genre = dto.Genre,
+            Duration = dto.Duration
+        };
+        _context.Movies.Add(movie);
+        await _context.SaveChangesAsync();
+        var result = new MovieDto()
+        {
+            Id = movie.Id, Title = movie.Title, Year = movie.Year, Genre = movie.Genre, Duration = movie.Duration
+        };
+        return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, result);
+    }
+
     // PUT: api/Movie/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
